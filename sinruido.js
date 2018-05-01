@@ -1,9 +1,16 @@
-punctuation = '¡!,. ¿?:;';
-dictionary = ['pan', 'pri', 'prd', 'amlo', 'anaya', 'meade'];
-alreadyscannedArray = [];
-removedArray = [];
+chrome.storage.sync.get('forbidden_words', function(data) {
+  dictionary = data['forbidden_words'].split(',');
 
-parentAttribute = 'article';
+  if (document.location.href.indexOf('facebook') > -1) {
+    sinRuido();
+  }
+
+  var scrollSinRuido = debounce(sinRuido, 300);
+  document.addEventListener('scroll', scrollSinRuido);
+});
+
+punctuation = '¡!,. ¿?:;<>"\'';
+scannedPosts = {};
 parentClass = 'userContentWrapper';
 
 function findAncestor(el, cls) {
@@ -11,26 +18,31 @@ function findAncestor(el, cls) {
   return el;
 }
 
-userPosts = $$('.userContent');
-
 function removePosts(postArray, dictionary) {
   if (!postArray.length) return;
   for (i = 0; i < postArray.length; i++) {
-    innerText = postArray[i].innerHTML;
-    if (innerText) {
-      lowerCaseText = innerText.toLowerCase();
-      for (j = 0; j < dictionary.length; j++) {
-        matchThis = RegExp(`[${punctuation}]${dictionary[j]}[${punctuation}]`);
-        if (matchThis.test(lowerCaseText)) {
-          parentToRemove = findAncestor(postArray[i], parentClass);
-          // console.log(`removing: ${parentToRemove} because it matched: ${matchThis.exec(lowerCaseText)}`)
-          // parentToRemove && parentToRemove.remove();
-          parentToRemove.style.display = 'none';
-          break;
+    innerHTML = postArray[i].innerHTML;
+    if (innerHTML) {
+      md5Hash = md5(innerHTML);
+      if (!scannedPosts[md5Hash]) {
+        scannedPosts[md5Hash] = true;
+        lowerCaseText = innerHTML.toLowerCase();
+        for (j = 0; j < dictionary.length; j++) {
+          matchThis = RegExp(
+            `[${punctuation}]${dictionary[j].trim()}[${punctuation}]`
+          );
+          if (matchThis.test(lowerCaseText)) {
+            // console.debug('removing: ', matchThis.exec(lowerCaseText));
+            postArray[i].remove();
+            break;
+          }
         }
       }
     }
   }
 }
 
-removePosts(userPosts, dictionary);
+function sinRuido() {
+  userPosts = document.getElementsByClassName(parentClass);
+  removePosts(userPosts, dictionary);
+}
