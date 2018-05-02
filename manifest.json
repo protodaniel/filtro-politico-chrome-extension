@@ -1,7 +1,7 @@
 {
   "name": "Sin Ruido Político",
   "version": "0.1",
-  "description": "Remueve el ruido político de tu feed the Facebook",
+  "description": "Remueve el ruido político de tu feed the Facebook.",
   "background": {
     "scripts": ["bootstrap.js"],
     "persistent": false
