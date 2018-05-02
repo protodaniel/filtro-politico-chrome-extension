@@ -17,5 +17,8 @@ diccionario = [
   'peña nieto',
   'salinas',
   'vicente fox',
-  'elecciones'
+  'elecciones',
+  'peje',
+  'ine',
+  'trife'
 ];

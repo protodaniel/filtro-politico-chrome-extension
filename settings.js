@@ -38,7 +38,10 @@ document.addEventListener('DOMContentLoaded', function() {
       'peña nieto',
       'salinas',
       'vicente fox',
-      'elecciones'
+      'elecciones',
+      'peje',
+      'ine',
+      'trife'
     ];
     input.value = dictionary.join(',');
     chrome.storage.sync.set({ forbidden_words: input.value });

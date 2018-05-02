@@ -17,7 +17,10 @@ dictionary = [
   'peña nieto',
   'salinas',
   'vicente fox',
-  'elecciones'
+  'elecciones',
+  'peje',
+  'ine',
+  'trife'
 ];
 
 // when the extension is first installed
